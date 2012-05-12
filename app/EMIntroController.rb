@@ -10,7 +10,20 @@ class EMIntroController < UIViewController
   end
   
   def viewDidAppear animated
-    self.performSelector('loadApp', withObject:nil, afterDelay:0.1)
+    user_defaults = NSUserDefaults.standardUserDefaults
+    user_email    = user_defaults.objectForKey('email')
+    
+    if user_email.nil?
+      self.performSelector('loadSignup', withObject:nil, afterDelay:0.1)
+    else
+      self.performSelector('loadApp', withObject:nil, afterDelay:0.1)
+    end
+  end
+  
+  def loadSignup
+    navCtrlr = EMSignUpController.alloc.initWithStyle(UITableViewStyleGrouped)
+    navCtrlr.modalTransitionStyle = UIModalTransitionStyleCrossDissolve
+    self.presentModalViewController(navCtrlr, animated:true)
   end
   
   def loadApp
